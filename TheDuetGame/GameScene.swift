@@ -26,22 +26,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     var movingRectangle = SKSpriteNode()
     var spinningRectangle = SKSpriteNode()
     
-    var levelLabel = SKLabelNode()
+    var scoreLabel = SKLabelNode()
+    var timer: Double = 0.0
+    var storedScoreLabel = SKLabelNode()
     var startLabel = SKLabelNode()
     
     var isTouching: Bool = false
     var isMovable: Bool = true
+    var isFast: Bool = false
     var rotationDirection: Int = 0
     
     override func didMove(to view: SKView)
     {
         gameCamera = self.childNode(withName: "gameCamera") as! SKCameraNode
+        gameCamera.run(SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 0.975, duration: 1.0), SKAction.scale(to: 1.025, duration: 1.0)])))
         
         rotatePoint = self.childNode(withName: "rotatePoint") as! SKSpriteNode
         rotatePoint.position = CGPoint(x: 0.0, y: -300.0)
         blueBall = rotatePoint.childNode(withName: "blueBall") as! SKSpriteNode
         redBall = rotatePoint.childNode(withName: "redBall") as! SKSpriteNode
-        levelLabel = self.childNode(withName: "levelLabel") as! SKLabelNode
+        scoreLabel = self.childNode(withName: "scoreLabel") as! SKLabelNode
+        storedScoreLabel = self.childNode(withName: "storedScoreLabel") as! SKLabelNode
         startLabel = self.childNode(withName: "startLabel") as! SKLabelNode
         startLabel.run(SKAction.sequence([SKAction.fadeIn(withDuration: 1.0), SKAction.fadeOut(withDuration: 2.5)]))
         
@@ -135,21 +140,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     
     override public func update(_ currentTime: TimeInterval)
     {
-        for child in blocksNode.children
-        {
-            if (gameCamera.contains(child))
-            {
-                child.isHidden = false
-            }
-            else
-            {
-                child.isHidden = true
-            }
-        }
-        
         if (isMovable)
         {
-            if (isTouching)
+            timer += 1/36
+            scoreLabel.text = String(Int(timer))
+            
+            if (isTouching && !isFast)
             {
                 if (rotationDirection == -1)
                 {
@@ -160,6 +156,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate
                     rotateNode(node: rotatePoint, clockwise: true, speed: 0.1)
                 }
             }
+            if (isTouching && isFast)
+            {
+                if (rotationDirection == -1)
+                {
+                    rotateNode(node: rotatePoint, clockwise: false, speed: 0.15)
+                }
+                else if (rotationDirection == 1)
+                {
+                    rotateNode(node: rotatePoint, clockwise: true, speed: 0.15)
+                }
+            }
+        }
+        
+        if (Int(timer) >= 23)
+        {
+            isFast = true
+            self.speed = 1.5
         }
     }
     
@@ -174,19 +187,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         }
     }
     
+//    func reverseDirection()
+//    {
+//        let rotatePointMove = SKAction.move(to: CGPoint(x: 0, y: 300), duration: 0.5)
+//        let blocksNodeStop = SKAction.run {
+//            self.blocksNode.removeAllActions() }
+//        let blocksNodeReverse = SKAction.moveBy(x: 0.0, y: 410.0, duration: 1.5)
+//        
+//        rotatePoint.run(rotatePointMove)
+//        blocksNode.run(blocksNodeStop)
+//        blocksNode.run(SKAction.repeatForever(blocksNodeReverse))
+//        scoreLabel.run(SKAction.move(to: CGPoint(x: 0, y: 285), duration: 0.5))
+//    }
+    
     func die(ball: SKSpriteNode)
     {
         isMovable = false
         
+        gameCamera.removeAllActions()
         blocksNode.removeAllActions()
         blueEmitter.particleBirthRate = 0
         redEmitter.particleBirthRate = 0
+        storedScoreLabel.text = "\(Int(timer))"
         
         let scene = GameScene(fileNamed: "GameScene")
         scene!.scaleMode = .aspectFill
         
-        ball.run(SKAction.sequence([SKAction.resize(toWidth: 0.0, height: 0.0, duration: 1.5), SKAction.wait(forDuration: 1.0), SKAction.run{
-            self.view!.presentScene(scene)
-            }]))
+        ball.run(SKAction.sequence([SKAction.resize(toWidth: 0.0, height: 0.0, duration: 1.5), SKAction.wait(forDuration: 1.0), SKAction.run {
+            self.view!.presentScene(scene) }]))
     }
 }
