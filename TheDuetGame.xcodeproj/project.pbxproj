@@ -16,8 +16,6 @@
 		A66C761120B4666C0027D5FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A66C760F20B4666C0027D5FB /* LaunchScreen.storyboard */; };
 		A66C761E20B46ADD0027D5FB /* BlueEmitter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A66C761820B467130027D5FB /* BlueEmitter.sks */; };
 		A66C761F20B46ADF0027D5FB /* RedEmitter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A66C761C20B467130027D5FB /* RedEmitter.sks */; };
-		A66C762020B46AE20027D5FB /* rectangleEmitter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A66C761920B467130027D5FB /* rectangleEmitter.sks */; };
-		A66C762120B46AE40027D5FB /* squareEmitter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A66C761A20B467130027D5FB /* squareEmitter.sks */; };
 		A66C762320B46AEE0027D5FB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A66C761D20B467710027D5FB /* GameScene.sks */; };
 /* End PBXBuildFile section */
 
@@ -32,8 +30,6 @@
 		A66C761020B4666C0027D5FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A66C761220B4666C0027D5FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A66C761820B467130027D5FB /* BlueEmitter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BlueEmitter.sks; sourceTree = "<group>"; };
-		A66C761920B467130027D5FB /* rectangleEmitter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = rectangleEmitter.sks; sourceTree = "<group>"; };
-		A66C761A20B467130027D5FB /* squareEmitter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = squareEmitter.sks; sourceTree = "<group>"; };
 		A66C761C20B467130027D5FB /* RedEmitter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = RedEmitter.sks; sourceTree = "<group>"; };
 		A66C761D20B467710027D5FB /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,8 +69,6 @@
 				A66C760420B4666C0027D5FB /* Actions.sks */,
 				A66C761820B467130027D5FB /* BlueEmitter.sks */,
 				A66C761C20B467130027D5FB /* RedEmitter.sks */,
-				A66C761920B467130027D5FB /* rectangleEmitter.sks */,
-				A66C761A20B467130027D5FB /* squareEmitter.sks */,
 				A66C760820B4666C0027D5FB /* GameViewController.swift */,
 				A66C760020B4666C0027D5FB /* AppDelegate.swift */,
 				A66C760A20B4666C0027D5FB /* Main.storyboard */,
@@ -147,8 +141,6 @@
 				A66C761E20B46ADD0027D5FB /* BlueEmitter.sks in Resources */,
 				A66C760C20B4666C0027D5FB /* Main.storyboard in Resources */,
 				A66C761F20B46ADF0027D5FB /* RedEmitter.sks in Resources */,
-				A66C762120B46AE40027D5FB /* squareEmitter.sks in Resources */,
-				A66C762020B46AE20027D5FB /* rectangleEmitter.sks in Resources */,
 				A66C762320B46AEE0027D5FB /* GameScene.sks in Resources */,
 				A66C760E20B4666C0027D5FB /* Assets.xcassets in Resources */,
 				A66C761120B4666C0027D5FB /* LaunchScreen.storyboard in Resources */,

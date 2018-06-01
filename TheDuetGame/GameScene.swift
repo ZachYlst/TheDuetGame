@@ -28,12 +28,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     
     var scoreLabel = SKLabelNode()
     var timer: Double = 0.0
-    var storedScoreLabel = SKLabelNode()
     var startLabel = SKLabelNode()
+    var arrow = SKSpriteNode()
     
     var isTouching: Bool = false
     var isMovable: Bool = true
     var isFast: Bool = false
+    var canBoost: Bool = true
     var rotationDirection: Int = 0
     
     override func didMove(to view: SKView)
@@ -45,10 +46,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         rotatePoint.position = CGPoint(x: 0.0, y: -300.0)
         blueBall = rotatePoint.childNode(withName: "blueBall") as! SKSpriteNode
         redBall = rotatePoint.childNode(withName: "redBall") as! SKSpriteNode
-        scoreLabel = self.childNode(withName: "scoreLabel") as! SKLabelNode
-        storedScoreLabel = self.childNode(withName: "storedScoreLabel") as! SKLabelNode
-        startLabel = self.childNode(withName: "startLabel") as! SKLabelNode
-        startLabel.run(SKAction.sequence([SKAction.fadeIn(withDuration: 1.0), SKAction.fadeOut(withDuration: 2.5)]))
         
         blocksNode = self.childNode(withName: "blocksNode") as! SKSpriteNode
         blocksNode.run(SKAction.repeatForever(SKAction.moveBy(x: 0.0, y: -410.0, duration: 1.5)))
@@ -65,6 +62,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         blueEmitter.particleSize = CGSize(width: 90.0, height: 90.0)
         blueEmitter.targetNode = scene
         blueBall.addChild(blueEmitter)
+        
+        scoreLabel = self.childNode(withName: "scoreLabel") as! SKLabelNode
+        startLabel = self.childNode(withName: "startLabel") as! SKLabelNode
+        startLabel.run(SKAction.sequence([SKAction.fadeIn(withDuration: 1.0), SKAction.fadeOut(withDuration: 2.5)]))
+        arrow = self.childNode(withName: "arrow") as! SKSpriteNode
         
         drawPath()
         
@@ -169,10 +171,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate
             }
         }
         
-        if (Int(timer) >= 23)
+        if (timer >= 22)
         {
+            if (canBoost)
+            {
+                gameCamera.run(SKAction.sequence([SKAction.scale(to: 1.2, duration: 0.6), SKAction.scale(to: 1.0, duration: 1.5)]))
+                canBoost = false
+            }
             isFast = true
             self.speed = 1.5
+        }
+        
+        if (Int(timer) == 30)
+        {
+            reverseDirection()
         }
     }
     
@@ -187,18 +199,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         }
     }
     
-//    func reverseDirection()
-//    {
-//        let rotatePointMove = SKAction.move(to: CGPoint(x: 0, y: 300), duration: 0.5)
-//        let blocksNodeStop = SKAction.run {
-//            self.blocksNode.removeAllActions() }
-//        let blocksNodeReverse = SKAction.moveBy(x: 0.0, y: 410.0, duration: 1.5)
-//        
-//        rotatePoint.run(rotatePointMove)
-//        blocksNode.run(blocksNodeStop)
-//        blocksNode.run(SKAction.repeatForever(blocksNodeReverse))
-//        scoreLabel.run(SKAction.move(to: CGPoint(x: 0, y: 285), duration: 0.5))
-//    }
+    func reverseDirection()
+    {
+        let rotatePointRotate = SKAction.rotate(toAngle: CGFloat(Double.pi * 3), duration: 1.0)
+        let rotatePointMove = SKAction.move(to: CGPoint(x: 0, y: 300), duration: 0.5)
+        let blocksNodeReverse = SKAction.moveBy(x: 0.0, y: 410.0, duration: 1.5)
+        
+        rotatePoint.run(rotatePointRotate)
+        rotatePoint.run(rotatePointMove)
+        scoreLabel.run(SKAction.move(to: CGPoint(x: 0, y: 285), duration: 0.5))
+        blocksNode.removeAllActions()
+        blocksNode.run(SKAction.repeatForever(blocksNodeReverse))
+    }
     
     func die(ball: SKSpriteNode)
     {
@@ -208,7 +220,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         blocksNode.removeAllActions()
         blueEmitter.particleBirthRate = 0
         redEmitter.particleBirthRate = 0
-        storedScoreLabel.text = "\(Int(timer))"
         
         let scene = GameScene(fileNamed: "GameScene")
         scene!.scaleMode = .aspectFill
